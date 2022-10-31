@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load static %}
+{% block stylesheet %}{% static 'store/css/store.css' %}{% endblock %}
+{% block title %}
+    {{ product.name }}
+{% endblock %}
+{% block content %}
+    <br>
+    <br>
+    <br>
+ <div class="row pt-12">
+            <div class="col-12 col-md">
+<p style="font-style: oblique">Confidențialitatea dvs.<br>
+    Când vizitați orice site web, acesta poate stoca sau prelua informații pe browserul dvs., mai ales sub formă de cookie-uri. Aceste informații ar putea fi despre dvs., preferințele dvs. sau la dispozitivul dvs. și sunt utilizate în principal pentru ca site-ul să funcționeze așa cum este de așteptat. De obicei, informațiile nu vă identifică direct, dar vă pot oferi o experiență web mai personalizată. Deoarece vă respectăm dreptul la confidențialitate, puteți alege să nu permiteți anumite tipuri de cookie-uri. Faceți clic pe titlurile diverselor categorii pentru informații suplimentare și pentru a schimba setările noastre implicite. Cu toate acestea, blocarea anumitor tipuri de fișiere cookie vă poate influența experiența pe site și serviciile pe care vi le putem oferi.</p>
+            </div>
+ </div>
+{% endblock %}

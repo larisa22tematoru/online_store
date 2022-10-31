@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load static %}
+{% block stylesheet %}{% static 'store/css/store.css' %}{% endblock %}
+{% block title %}
+    {{ product.name }}
+{% endblock %}
+{% block content %}
+    <br>
+    <br>
+    <br>
+     <div class="row pt-8">
+            <div class="col-12 col-md">
+    <p style="font-style: oblique">Stimati clienti,<br>
+
+In conformitate cu Legea nr. 296/2004 privind Codul Consumului si Ordonanța de urgență nr. 140/2021 privind anumite aspecte referitoare la contractele de vânzare de bunuri, dar si a Politicii de Retur a Touch of Gold SRL , prin prezenta va comunicam faptul ca, in magazinele noastre, produsele achizitionate pot fi inlocuite in termen de 14 zile calendaristice, la prezentarea garantiei si a bonului fiscal care dovedesc achizitia, fie cu:<br>
+
+- Un produs identic;<br>
+- Un produs diferit, dar care are acelasi pret<br>
+- Un produs diferit, dar cu pret mai mare, caz in care se plateste diferenta de pret<br>
+
+
+Totodata, mentionam faptul ca, in conformitate cu legislatia in vigoare si Politica Interna de Retur a Touch of Gold SRL, banii pentru achizitiile facute NU se pot returna.<br>
+
+
+Prezenta politică de retur nu aduce atingere dreptului consumatorilor de retragere dintr-un contract încheiat la distanță sau în afara spațiilor comerciale în termen de 14 zile de la livrare.<br>
+
+
+TOUCH OF GOLD SRL</p>
+            </div>
+     </div>
+{% endblock %}

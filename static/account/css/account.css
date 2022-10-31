@@ -1,0 +1,13 @@
+.container-fluid {
+        max-width: 100%;
+    }
+
+    .account-form input {
+        border: 1px solid rgba(0, 247, 254, 0.72);
+        height: calc(2em + .75rem + 2px);
+    }
+
+    .account-form input:focus {
+        border-color: #00F7FEB7;
+        box-shadow: #11cc9a;
+    }

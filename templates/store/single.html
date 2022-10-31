@@ -1,0 +1,292 @@
+{% extends "base.html" %}
+{% load static %}
+{#{% block stylesheet %}{% static 'store/css/store.css' %}{% endblock %}#}
+{% block title %}
+    {{ product.name }}
+{% endblock %}
+{% block content %}
+
+    <div class="container">
+    {% if messages %}
+        <div class="alert alert-warning" alert-{{ message.tags }}  role="alert">
+            {% for message in messages %}
+                {{ message|safe }}  <a href="{% url "account:wishlist" %}" class="alert-link">Your Wishlist</a>.
+            {% endfor %}
+        </div>
+    {% endif %}
+    <div class="container" style="max-width: 1000px">
+
+        <div class="row g-3">
+
+            <div class="col-12 d-flex justify-content-between">
+
+            </div>
+
+            <div class="col-md-5 ps-3 col-lg-5 order-md-last p-0 order-1">
+                <div class="d-grid gap-2">
+
+                    <div class="d-flex d-flex-inline justify-content-between">
+                        <div><span class="h3">${{ product.regular_price }}</span>
+                            <p class="text-muted">includes tax</p>
+                            <p class="text-muted">{{ product.description }}</p></div>
+                        <div class="">
+                            <label for="select" class="choose">Quantity</label>
+                            <select id="select" class="h6 store-select-dropdown">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                            </select>
+                        </div>
+                    </div>
+                    <hr>
+                    <button type="button" id="add-button" value="{{ product.id }}" class="btn btn-dark fw500">Add
+                        to basket
+                    </button>
+                    <a href="{% url "account:user_wishlist" product.id %}" class="btn btn-outline-dark fw500"
+                       role="button" aria-disabled="true">Add to Wishlist</a>
+                    {#                        <button type="button" id="add-button" value="{{ product.id }}" class="btn btn-light fw500">Add#}
+                    {#                            to Wishlist#}
+                    {#                        </button>#}
+                </div>
+            </div>
+
+            <div class="col-md-7 col-lg-7 p-0">
+
+
+                <div class="card mb-3 border-0">
+                    <div class="row g-0">
+                        <div class="col-md-12">
+                            <div class="card-body p-1">
+                                <h1 class="mb-0 h2 pe-4 pb-4">{{ product.title }}</h1>
+                                {% for image in product.product_image.all %}
+                                    {% if image.is_feature %}
+                                        <img class="img-fluid mx-auto d-block" width="200px" alt="Responsive image"
+                                             src="{{ image.image.url }}" alt="{{ image.image.alt_text }}">
+                                    {% else %}
+                                        <img class="img-fluid d-block-inline pt-3" width="100px"
+                                             alt="Responsive image" src="{{ image.image.url }}"
+                                             alt="{{ image.image.alt_text }}">
+                                    {% endif %}
+                                {% endfor %}
+                                {#                                    <div class="bg-light"><img class="img-fluid mx-auto d-block" width="400px"#}
+                                {#                                                               alt="Responsive image" src="{{ product.image.url }}">#}
+                                {#                                    </div>#}
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+
+
+    <script>
+        $(document).on('click', '#add-button', function (e) {
+            e.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: '{% url "basket:basket_add" %}',
+                data: {
+                    productid: $('#add-button').val(),
+                    productqty: $('#select option:selected').text(),
+                    csrfmiddlewaretoken: "{{csrf_token}}",
+                    action: 'post'
+                },
+                success: function (json) {
+                    document.getElementById("basket-qty").innerHTML = json.qty
+                },
+                error: function (xhr, errmsg, err) {
+                }
+            });
+        })
+    </script>
+
+
+{% endblock %}
+
+
+
+
+
+
+
+{#{% extends "base.html" %}#}
+{#{% load static %}#}
+{#{% block title %}#}
+{#    {{ product.name }}#}
+{#{% endblock %}#}
+{#{% block content %}#}
+{#    <div class="container">#}
+{#        <main class="pt-5">#}
+{#            <div class="row g-3">#}
+{#                <div class="col-md-5 col-lg-5 order-md-first bg-light">#}
+{#                    <img class="img-fluid mx-auto d-block" width="200px" alt="Responsive image"#}
+{#                         src="{{ product.image.url }}">#}
+{#                </div>#}
+{#                <div class="col-md-7 col-lg-7 ps-md-3 ps-lg-5">#}
+{#                    <h1 class="mb-0 h4">{{ product.product_name }}</h1>#}
+{#                    <p><span class="lead">{{ product.category }}</span></p>#}
+{#                    <p>{{ product.description|slice:":355" }}...</p>#}
+{#                    <div class="border">#}
+{#                        <div class="col border-bottom">#}
+{#                            <div class="row p-3">#}
+{#                                <div class="col-6">Hardback</div>#}
+{#                                <div class="col-6 text-end"><span class="h4 fw-bold">${{ product.price }}</span></div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <div class="col">#}
+{#                            <div class="row p-3">#}
+{#                                <div class="col-6">#}
+{#                                    <label for="select">Qty</label>#}
+{#                                    <select id="select">#}
+{#                                        <option value="">1</option>#}
+{#                                        <option value="">2</option>#}
+{#                                        <option value="">3</option>#}
+{#                                        <option value="">4</option>#}
+{#                                    </select>#}
+{##}
+{#                                </div>#}
+{#                                <div class="col-6 text-end">#}
+                                    {#      <button type="button" id="add-button" value="product.id" class="btn btn-secondary btn-sm">Add to basket</button></div>#}
+{#                                    <input type="hidden" class="product-id-{{ data.id }}" value="{{ data.id }}"/>#}
+{#                                    <input type="hidden" class="product-title-{{ data.id }}" value="{{ data.title }}"/>#}
+{#                                    <button type="button" class="btn btn-secondary btn-sm add-to-cart "#}
+{#                                            data-index="{{ data.id }}" type="button" id="addToCartBtn">Add to basket#}
+{#                                    </button>#}
+{#                                </div>#}
+                                {#                            		    <button class="btn btn-primary btn-sm add-to-cart" data-index="{{data.id}}" type="button" id="addToCartBtn"><i class="fa fa-shopping-cart"></i> Add to Cart</button>#}
+{##}
+{##}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        </main>#}
+{##}
+{#    </div>#}
+{#    <script>#}
+        {#$("#addToCartBtn").on#}
+{#        $(document).on('click',".addToCartBtn",function(){#}
+		{#var _vm=$(this);#}
+		{#var _index=_vm.attr('data-index');#}
+		{#var _qty=$(".product-qty-"+_index).val();#}
+{#		var _productId=$(".product-id-").val();#}
+		{#var _productImage=$(".product-image-"+_index).val();#}
+{#		var _productTitle=$(".product-title-").val();#}
+		{#var _productPrice=$(".product-price-"+_index).text();#}
+{#		// Ajax#}
+{#		$.ajax({#}
+{#			url:'{% url "basket:basket_add" %}',#}
+{#			data:{#}
+{#				'id':_productId,#}
+				{#'image':_productImage,#}
+				{#'qty':_qty,#}
+{#				'title':_productTitle,#}
+				{#'price':_productPrice#}
+{#			},#}
+{#			dataType:'json',#}
+{#			beforeSend:function(){#}
+{#				_vm.attr('disabled',true);#}
+{#			},#}
+{#			success:function(res){#}
+{#				$(".summary").text(res.totalitems);#}
+{#				_vm.attr('disabled',false);#}
+{#			}#}
+{#		});#}
+{#        })#}
+        {#$(document).on('click', '#add-button', function (e){#}
+        {#    e.preventDefault();#}
+        {#    $.ajax({#}
+        {#        type: 'POST',#}
+        {#        url: '{% url "basket:basket_add" %}',#}
+        {#        data: {#}
+        {#            productid: $('#add-button').val(),#}
+        {#            csrfmiddlewaretoken: "{{csrf_token}}",#}
+        {#            action: 'post'#}
+        {#        },#}
+        {#        success: function (json) {#}
+        {#        },#}
+        {#        error: function (xhr, errmsg, err) {}#}
+        {#    });#}
+{##}
+{##}
+{#    </script>#}
+{#{% endblock content %}#}
+
+
+
+{#{% extends "base.html" %}#}
+{#{% load static %}#}
+{#{% block title %}#}
+{#{{ product.name }}#}
+{#{% endblock %}#}
+{#{% block content %}#}
+{#<div class="container">#}
+{#    <main class="pt-5">#}
+{#        <div class="row g-3">#}
+{#            <div class="col-md-5 col-lg-5 order-md-first bg-light">#}
+{#                <img class="img-fluid mx-auto d-block" width="200px" alt="Responsive image" src="{{ product.image.url }}">#}
+{#            </div>#}
+{#            <div class="col-md-7 col-lg-7 ps-md-3 ps-lg-5">#}
+{#                <h1 class="mb-0 h4">{{ product.title }}</h1>#}
+{#                <p><span class="lead">{{ product.author }}</span> (Author)</p>#}
+{#                <p>{{ product.description|slice:":355" }}...</p>#}
+{#                <div class="border">#}
+{#                    <div class="col border-bottom">#}
+{#                        <div class="row p-3">#}
+{#                            <div class="col-6">Hardback</div>#}
+{#                            <div class="col-6 text-end"><span class="h4 fw-bold">£{{ product.price }}</span></div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                    <div class="col">#}
+{#                        <div class="row p-3">#}
+{#                            <div class="col-6">#}
+{#                                <label for="select">Qty</label>#}
+{#                                <select id="select">#}
+{#                                    <option value="1">1</option>#}
+{#                                    <option value="2">2</option>#}
+{#                                    <option value="3">3</option>#}
+{#                                    <option value="4">4</option>#}
+{#                                </select>#}
+{##}
+{#                            </div>#}
+{#                            <div class="col-6 text-end">#}
+{#<button type="button" id="add-button" value="{{product.id}}" class="btn btn-secondary btn-sm">Add to basket</button></div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </main>#}
+{##}
+{#</div>#}
+{##}
+{#<script>#}
+{#    $(document).on('click', '#add-button', function (e) {#}
+{#        e.preventDefault();#}
+{#        $.ajax({#}
+{#            type: 'POST',#}
+{#            url: '{% url "basket:basket_add" %}',#}
+{#            data: {#}
+{#                productid: $('#add-button').val(),#}
+{#                productqty: $('#select option:selected').text(),#}
+{#                csrfmiddlewaretoken: "{{csrf_token}}",#}
+{#                action: 'post'#}
+{#            },#}
+{#            success: function (json) {#}
+{#               document.getElementById("basket-qty").innerHTML = json.qty#}
+{#            },#}
+{#            error: function (xhr, errmsg, err) {}#}
+{#        });#}
+{#    })#}
+{#</script>#}
+{##}
+{#{% endblock %}#}
+
+</div>
